@@ -111,8 +111,8 @@ export function imageGallery({
                   key={page}
                   onClick={() => onPageChange?.(page)}
                   className={`h-8 w-8 rounded ${page === currentPage
-                      ? 'bg-primary text-primary-foreground'
-                      : 'border border-border hover:bg-muted'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'border border-border hover:bg-muted'
                     }`}
                   aria-current={page === currentPage ? 'page' : undefined}
                 >
