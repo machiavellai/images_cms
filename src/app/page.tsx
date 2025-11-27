@@ -93,6 +93,9 @@ export default function Home() {
           />
         )}
       </div>
+      <ModalComponent image={
+        selectedImage
+      }/>
     </main >
   );
 }

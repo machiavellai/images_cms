@@ -13,9 +13,10 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { ImageModel } from '@/lib/dal/models';
-import { useUIStore } from '@/lib/store';
-import { Button } from '@/components/ui/button';
+import { ImageModel } from '@/app/lib/data/model';
+import { useUIStore } from '@/app/lib/store';
+import Button from './components/ui/Button';
+
 
 interface ModalComponentProps {
   /**
@@ -115,7 +116,7 @@ export function ModalComponent({ image }: ModalComponentProps) {
                 fill
                 className="object-cover"
                 placeholder="blur"
-                blurDataURL={image.placeholderDataURL}
+                blurDataURL={image.placeholderDataUrl}
                 sizes="(max-width: 640px) 100vw, 80vw"
               />
             </div>
