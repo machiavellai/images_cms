@@ -10,11 +10,13 @@
  * maintaining server-side authorization boundaries.
  */
 
-'use client'
-import { ImageModel } from '@/app/lib/data/model';
-import { useUIStore } from '@/app/lib/store';
-import { ImageCard } from './imageCard';
-import Button from './ui/Button';
+'use client';
+
+import { useUIStore } from "@/app/lib/store";
+import { ImageCard } from "./imageCard";
+import Button from "./ui/Button";
+import { ImageModel } from "@/app/lib/data/model";
+
 
 
 interface ImageGalleryProps {
@@ -51,15 +53,24 @@ interface ImageGalleryProps {
   onPageChange?: (newPage: number) => void;
 }
 
-
-export function imageGallery({
+/**
+ * Gallery component that displays a grid of images with pagination.
+ * 
+ * PERFORMANCE NOTE: Uses memoization via Zustand callbacks to prevent
+ * unnecessary re-renders when modal state changes independently of image data.
+ * The openModal function is stored in Zustand, so clicking an image doesn't
+ * trigger a full parent component re-render.
+ * 
+ * @param props - Component props
+ * @returns JSX element representing the image gallery with pagination
+ */
+export function ImageGallery({
   images,
   totalImages,
   currentPage,
   pageSize,
-  onPageChange
+  onPageChange,
 }: ImageGalleryProps) {
-
   // Get modal actions from Zustand store
   const openModal = useUIStore((state) => state.openModal);
 
@@ -68,16 +79,15 @@ export function imageGallery({
   const hasNextPage = currentPage < totalPages;
   const hasPrevPage = currentPage > 1;
 
-
   // PERFORMANCE: useCallback-like behavior via Zustand - the openModal function
   // reference remains stable across renders, preventing child re-renders
   const handleImageClick = (imageId: string) => {
     openModal(imageId);
   };
+
   return (
-    <div className='w-full space-y-8'>
-
-
+    <div className="w-full space-y-8">
+      {/* Image Grid - Responsive layout using Tailwind grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {images.map((image) => (
           <ImageCard
@@ -110,10 +120,11 @@ export function imageGallery({
                 <button
                   key={page}
                   onClick={() => onPageChange?.(page)}
-                  className={`h-8 w-8 rounded ${page === currentPage
-                    ? 'bg-primary text-primary-foreground'
-                    : 'border border-border hover:bg-muted'
-                    }`}
+                  className={`h-8 w-8 rounded ${
+                    page === currentPage
+                      ? 'bg-primary text-primary-foreground'
+                      : 'border border-border hover:bg-muted'
+                  }`}
                   aria-current={page === currentPage ? 'page' : undefined}
                 >
                   {page}
@@ -131,8 +142,6 @@ export function imageGallery({
           </div>
         </div>
       )}
-
     </div>
-  )
+  );
 }
-
