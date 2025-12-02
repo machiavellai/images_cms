@@ -74,14 +74,14 @@ export function ModalComponent({ image }: ModalComponentProps) {
 
       {/* Modal container */}
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center md:p-4 p-4 overflow-y-auto"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        <div className="w-full max-w-2xl rounded-lg bg-card shadow-lg">
+        <div className="w-full max-w-2xl rounded-lg bg-card shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto mx-4">
           {/* Close button */}
-          <div className="flex items-center justify-between border-b border-border p-4">
+          <div className="flex items-center justify-between border-b border-border p-4 sticky top-0 bg-card z-10">
             <h2 id="modal-title" className="text-xl font-semibold text-card-foreground">
               {image.title}
             </h2>
@@ -109,7 +109,7 @@ export function ModalComponent({ image }: ModalComponentProps) {
           {/* Modal content */}
           <div className="p-6">
             {/* Image display */}
-            <div className="relative mb-4 h-96 w-full overflow-hidden rounded-md bg-muted">
+            <div className="relative mb-4 h-[min(60vh,24rem)] w-full overflow-hidden rounded-md bg-muted">
               <Image
                 src={image.url || "/placeholder.svg"}
                 alt={image.title}
