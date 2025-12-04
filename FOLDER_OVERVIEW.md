@@ -3,6 +3,7 @@
 This file provides a concise, shareable overview of the repository structure, responsibilities for each folder/file, and where to look for important functionality. Use this when explaining the codebase to teammates or stakeholders.
 
 Root layout
+
 ```
 images_cms/
 ├── components/               # Reusable UI components
@@ -94,4 +95,4 @@ npm install
 npm run dev
 ```
 
-Want this exported as a single-page PDF or a printable diagram? I can generate a simple diagram (SVG/PNG) that maps component dependencies and data flow next. Tell me if you want a diagram, and whether you prefer a horizontal flow or vertical hierarchy. 
+Want this exported as a single-page PDF or a printable diagram? I can generate a simple diagram (SVG/PNG) that maps component dependencies and data flow next. Tell me if you want a diagram, and whether you prefer a horizontal flow or vertical hierarchy.
