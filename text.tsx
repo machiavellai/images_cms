@@ -1,3 +1,10 @@
+// fn learn::reference($doc) = $doc->{name};
+
+// *[_type == "event"]{
+//   "headline": learn::reference(headline),
+//   "venue": learn::reference(venue)
+// }
+
 /**
  * MODAL COMPONENT - CLIENT COMPONENT
  * 

@@ -18,6 +18,7 @@ This README documents the project structure and app breakdown for the `images_cm
 **Project Folder Overview**
 
 ```
+
 images_cms/
 ├── components/               # Reusable UI components
 │   ├── imageCard.tsx
