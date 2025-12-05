@@ -8,6 +8,7 @@
 /**
  * Image metadata model representing stored image records
  */
+
 export interface ImageModel {
     id: string;
     slug: string;

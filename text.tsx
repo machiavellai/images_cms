@@ -1,3 +1,10 @@
+// import {eventType} from './eventType'
+
+// export const schemaTypes = [eventType]
+
+
+
+
 // fn learn::reference($doc) = $doc->{name};
 
 // *[_type == "event"]{

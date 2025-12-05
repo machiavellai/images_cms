@@ -1,3 +1,14 @@
+
+# Schema errors
+
+There were errors while attempting to compile the configuration of your Sanity Studio Schema types.
+
+## Document type "galleryImage"
+
+Path: galleryImage:document → fields → uploadedBy:reference → to → <unnamed_type_@_index_0>:user
+Error: Unknown type: user.
+
+
 # Demo Script — images_cms
 
 This document is a concise, shareable step-by-step demo script you can use when presenting the `images_cms` application. It includes quick-start steps, an ordered walkthrough of the UI, places to capture screenshots, and a short checklist you can follow during a live demo.
