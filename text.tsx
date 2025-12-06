@@ -1,3 +1,15 @@
+// The most significant change we'll make first is creating a separate "Route Group" for the entire application 
+// front end. This route group will separate the front end layout code from the Studio without affecting the URL.
+//  It is also useful when integrating Visual Editing and displaying the front end inside the Studio.
+
+// src
+// └── app
+//     ├── // all other files
+//     ├── layout.tsx
+//     └── (frontend)
+//         └── layout.tsx
+
+
 // import {eventType} from './eventType'
 
 // export const schemaTypes = [eventType]

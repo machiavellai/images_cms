@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "predev": "npm run typegen",
+  "prebuild": "npm run typegen",
+  "typegen": "sanity schema extract --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.2",
