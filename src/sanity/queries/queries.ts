@@ -13,6 +13,6 @@ export const IMAGES_QUERY = defineQuery(`*[_type == "galleryImage" && defined(sl
 //   title, body, mainImage
 // }`)
 
-export const IMAGE_QURY = defineQuery(`*[_type == "galleryImage" && slug.current == $slug][0]{
+export const IMAGE_QUERY = defineQuery(`*[_type == "galleryImage" && slug.current == $slug][0]{
   title, description, image
 }`)

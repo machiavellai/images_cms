@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ImageModel } from "./lib/data/model";
-import { ModalComponent } from "../../text";
-import { fetchImages, getImageCount } from "./lib/data";
-import { useUIStore } from "./lib/store";
-import { ImageGallery } from "../../components/imageGallery";
+import { ImageModel } from "../lib/data/model";
+import { ModalComponent } from "../../../text";
+import { fetchImages, getImageCount } from "../lib/data";
+import { useUIStore } from "../lib/store";
+import { ImageGallery } from "../../../components/imageGallery";
 
 /**
  * Home page component for the public image gallery.

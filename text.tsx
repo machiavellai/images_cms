@@ -1,6 +1,30 @@
-// The most significant change we'll make first is creating a separate "Route Group" for the entire application 
-// front end. This route group will separate the front end layout code from the Studio without affecting the URL.
-//  It is also useful when integrating Visual Editing and displaying the front end inside the Studio.
+// src/app/
+// ├── layout.tsx                    # Root layout (bare minimum)
+// ├── studio/                       # Studio routes (Sanity CMS)
+// │   └── [[...index]].tsx         # Catch-all for studio
+// ├── (frontend)/                   # ROUTE GROUP - all public pages
+// │   ├── layout.tsx               # Frontend layout (header, footer, theme)
+// │   ├── page.tsx                 # Gallery page
+// │   ├── admin/
+// │   │   ├── layout.tsx
+// │   │   └── page.tsx
+// │   └── [imageSlug]/
+// │       └── page.tsx             # Single image detail (optional)
+// ├── api/                         # API routes (shared)
+// │   └── images/
+// │       ├── route.ts             # GET /api/images
+// │       └── [id]/route.ts        # GET /api/images/[id]
+// ├── lib/
+// │   ├── sanity.ts                # Sanity client setup
+// │   ├── sanity.queries.ts        # GROQ queries
+// │   └── data/
+// │       ├── model.ts             # TS interfaces
+// │       └── index.ts             # Data access layer
+// └── config/
+//     └── DBConfig.ts
+
+
+
 
 // src
 // └── app
