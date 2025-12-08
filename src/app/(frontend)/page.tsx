@@ -1,65 +1,23 @@
-'use client'
+import Link from "next/link";
+import { sanityFetch } from "@/sanity/lib/live";
+import { IMAGES_QUERY } from "@/sanity/lib/queries";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { ImageModel } from "../lib/data/model";
-import { ModalComponent } from "../../../text";
-import { fetchImages, getImageCount } from "../lib/data";
-import { useUIStore } from "../lib/store";
-import { ImageGallery } from "../../../components/imageGallery";
 
 /**
- * Home page component for the public image gallery.
- * 
- * PERFORMANCE OPTIMIZATION:
- * - Uses Next.js Image component for automatic optimization
- * - Implements pagination to limit initial payload (12 images per page)
- * - ISR with 60-second revalidation balances freshness and performance
- * - Server-side data fetching reduces client-side JavaScript
- * 
- * @returns JSX element for the gallery page
+ * Gallery Home Page — Server Component with Live Updates
+ *
+ * This page fetches images directly from Sanity CMS using sanityFetch.
+ * Live updates are enabled via the SanityLive component in the layout.
+ *
+ * BENEFITS:
+ * - Live content updates: When you publish changes in Sanity Studio, they appear instantly
+ * - No caching: Always fresh content from Sanity
+ * - Type-safe: GROQ query response is automatically typed
+ * - SEO optimized: Images are in the HTML
  */
 
-export default function Home() {
-
-  const [images, setImages] = useState<ImageModel[]>([])
-  const [totalImages, setTotalImages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-
-
-  // Get selected image from store for modal display
-  const selectedImageId = useUIStore((state) => state.selectedImageId);
-  const selectedImage = images.find((img) => img.id === selectedImageId) || null;
-
-
-  // Fetch images on mount and page change
-
-  useEffect(() => {
-
-    const loadImages = async () => {
-      setIsLoading(true);
-      try {
-        const [fetchedImages, count] = await Promise.all([
-          fetchImages(currentPage, 12),
-          getImageCount(),
-        ]);
-        setImages(fetchedImages);
-        setTotalImages(count);
-      } catch (error) {
-        console.log("Failed to load images due to : ", error);
-      }
-      finally {
-        setIsLoading(false);
-      }
-    }
-    loadImages();
-  }, [currentPage])
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+export default async function Home() {
+  const { data: images } = await sanityFetch({ query: IMAGES_QUERY });
 
 
   return (
@@ -75,27 +33,31 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-4 py-12" >
-        {isLoading ? (
-          <div className="flex h-96 items-center justify-center">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full border-4 border-muted border-t-primary h-8 w-8"></div>
-              <p className="mt-4 text-muted-foreground">Loading images...</p>
+      <div className="mx-auto max-w-7xl px-4 py-12">
+        {images && images.length > 0 ? (
+          <ul className="grid grid-cols-1 gap-6 divide-y divide-border">
+            {images.map((image) => (
+              <li key={image._id}>
+                <Link
+                  className="block p-4 hover:text-primary transition-colors"
+                  href={`/images/${image?.slug?.current}`}
+                >
+                  <h2 className="text-2xl font-semibold">{image?.title}</h2>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="flex h-96 items-center justify-center text-center">
+            <div>
+              <p className="text-muted-foreground">No images published yet.</p>
+              <Link href="/admin" className="mt-4 inline-block text-primary hover:underline">
+                Go to admin to add images →
+              </Link>
             </div>
           </div>
-        ) : (
-          <ImageGallery
-            images={images}
-            totalImages={totalImages}
-            currentPage={currentPage}
-            pageSize={12}
-            onPageChange={handlePageChange}
-          />
         )}
       </div>
-      <ModalComponent image={
-        selectedImage
-      }/>
-    </main >
+    </main>
   );
 }

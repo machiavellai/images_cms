@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "predev": "npm run typegen",
-  "prebuild": "npm run typegen",
-  "typegen": "sanity schema extract --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate"
+    "prebuild": "npm run typegen",
+    "typegen": "sanity schema extract --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.2",
@@ -39,6 +39,7 @@
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-toggle-group": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@sanity/client": "^7.13.1",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.19.0",
     "@vercel/analytics": "latest",

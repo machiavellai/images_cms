@@ -1,51 +1,24 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-// import "./globals.css";
-import "../globals.css";
+import { SanityLive } from '@/sanity/lib/live'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+/**
+ * Frontend Layout
+ * 
+ * This layout wraps all frontend routes (public gallery, details, etc.)
+ * It is separate from the root layout to allow the Studio to have
+ * its own layout without affecting public routes.
+ * 
+ * SanityLive enables visual editing in the Sanity Studio.
+ */
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: 'Image CMS Gallery',
-  description: 'A performant and secure image content management system built with Next.js 14',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
-};
-
-export default function RootLayout({
+export default function FrontendLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className={`antialiased`}>
-        {children}
-      </body>
-    </html>
+    <>
+      {children}
+      <SanityLive />
+    </>
   );
 }

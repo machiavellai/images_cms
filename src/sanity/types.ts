@@ -37,6 +37,7 @@ export type GalleryImage = {
   width: number;
   height: number;
   fileSize: number;
+  alt?: string;
   isPublished?: boolean;
   createdAt: string;
   updatedAt?: string;
@@ -162,38 +163,40 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes = GalleryImage | SanityImageCrop | SanityImageHotspot | Slug | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./src/sanity/queries/queries.ts
+// Source: ./src/sanity/lib/queries.ts
 // Variable: IMAGES_QUERY
-// Query: *[_type == "galleryImage" && defined(slug.current)]{  _id, title, slug}
+// Query: *[_type == "galleryImage" && defined(slug.current)] | order(_createdAt desc) {    _id,    title,    slug  }
 export type IMAGES_QUERYResult = Array<{
   _id: string;
   title: string;
   slug: Slug;
 }>;
-// Variable: IMAGE_QURY
-// Query: *[_type == "galleryImage" && slug.current == $slug][0]{  title, description, image}
-export type IMAGE_QURYResult = {
+// Variable: IMAGE_BY_SLUG_QUERY
+// Query: *[_type == "galleryImage" && slug.current == $slug][0] {    _id,    title,    slug,    description,    "url": image.asset->url,    "placeholderDataUrl": image.asset->metadata.lqip,    "width": image.asset->metadata.dimensions.width,    "height": image.asset->metadata.dimensions.height,    fileSize,    uploadedBy,    createdAt,    updatedAt  }
+export type IMAGE_BY_SLUG_QUERYResult = {
+  _id: string;
   title: string;
+  slug: Slug;
   description: string | null;
-  image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  url: string | null;
+  placeholderDataUrl: string | null;
+  width: number | null;
+  height: number | null;
+  fileSize: number;
+  uploadedBy: null;
+  createdAt: string;
+  updatedAt: string | null;
 } | null;
+// Variable: IMAGES_COUNT_QUERY
+// Query: count(*[_type == "galleryImage" && defined(slug.current)])
+export type IMAGES_COUNT_QUERYResult = number;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"galleryImage\" && defined(slug.current)]{\n  _id, title, slug\n}": IMAGES_QUERYResult;
-    "*[_type == \"galleryImage\" && slug.current == $slug][0]{\n  title, description, image\n}": IMAGE_QURYResult;
+    "\n  *[_type == \"galleryImage\" && defined(slug.current)] | order(_createdAt desc) {\n    _id,\n    title,\n    slug\n  }\n": IMAGES_QUERYResult;
+    "\n  *[_type == \"galleryImage\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    description,\n    \"url\": image.asset->url,\n    \"placeholderDataUrl\": image.asset->metadata.lqip,\n    \"width\": image.asset->metadata.dimensions.width,\n    \"height\": image.asset->metadata.dimensions.height,\n    fileSize,\n    uploadedBy,\n    createdAt,\n    updatedAt\n  }\n": IMAGE_BY_SLUG_QUERYResult;
+    "\n  count(*[_type == \"galleryImage\" && defined(slug.current)])\n": IMAGES_COUNT_QUERYResult;
   }
 }

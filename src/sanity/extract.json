@@ -146,6 +146,13 @@
         },
         "optional": false
       },
+      "alt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "isPublished": {
         "type": "objectAttribute",
         "value": {
