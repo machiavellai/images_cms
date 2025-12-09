@@ -15,8 +15,16 @@ import { defineQuery } from "next-sanity";
 export const IMAGES_QUERY = defineQuery(`
   *[_type == "galleryImage" && defined(slug.current)] | order(_createdAt desc) {
     _id,
+    _createdAt,
     title,
-    slug
+    slug,
+    description,
+    image,
+    "url": image.asset->url,
+    "placeholderDataUrl": image.asset->metadata.lqip,
+    "width": image.asset->metadata.dimensions.width,
+    "height": image.asset->metadata.dimensions.height,
+    fileSize
   }
 `);
 

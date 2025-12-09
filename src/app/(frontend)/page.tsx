@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
 import { IMAGES_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from '@/sanity/lib/image'
+import { ImageModel } from '@/app/lib/data/model'
+import GalleryClient from "../../../components/GalleryClient";
 
 
 /**
@@ -19,6 +22,22 @@ import { IMAGES_QUERY } from "@/sanity/lib/queries";
 export default async function Home() {
   const { data: images } = await sanityFetch({ query: IMAGES_QUERY });
 
+  // Map Sanity response to app's ImageModel shape used by the client components
+  const transformed: ImageModel[] = (images || []).map((img: any) => ({
+    id: img._id,
+    slug: img?.slug?.current || img.slug || img._id,
+    title: img?.title || 'Untitled',
+    description: img?.description || '',
+    url: img?.image ? urlFor(img.image).auto('format').width(1200).url() : img?.url || '',
+    placeholderDataUrl: img?.placeholderDataUrl || (img?.image?.asset?.metadata?.lqip ?? ''),
+    width: img?.width || img?.image?.asset?.metadata?.dimensions?.width || 1200,
+    height: img?.height || img?.image?.asset?.metadata?.dimensions?.height || 800,
+    fileSize: img?.fileSize || 0,
+    uploadedBy: img?.uploadedBy || '',
+    createdAt: img?._createdAt ? new Date(img._createdAt) : new Date(),
+    updatedAt: img?.updatedAt ? new Date(img.updatedAt) : new Date(),
+    isPublished: !!img?.isPublished,
+  }))
 
   return (
     <main className="min-h-screen bg-background">
@@ -34,19 +53,8 @@ export default async function Home() {
 
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-4 py-12">
-        {images && images.length > 0 ? (
-          <ul className="grid grid-cols-1 gap-6 divide-y divide-border">
-            {images.map((image) => (
-              <li key={image._id}>
-                <Link
-                  className="block p-4 hover:text-primary transition-colors"
-                  href={`/images/${image?.slug?.current}`}
-                >
-                  <h2 className="text-2xl font-semibold">{image?.title}</h2>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        {transformed && transformed.length > 0 ? (
+          <GalleryClient images={transformed} />
         ) : (
           <div className="flex h-96 items-center justify-center text-center">
             <div>
